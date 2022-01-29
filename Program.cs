@@ -10,7 +10,7 @@ namespace DMB_Timer
 
             string buf;
 
-            Console.WriteLine("DMB Timer v.1.1\n");
+            Console.WriteLine("DMB Timer v.1.2\n");
             Console.WriteLine("Формат даты: DD.MM.YYYY\nНапример, 22.02.2022\n");
 
             Console.Write("Введите дату призыва: ");
@@ -42,12 +42,22 @@ namespace DMB_Timer
             var total = finishDate.Subtract(startDate);
             var left = finishDate.Subtract(today);
 
+            int leftDays = (left.TotalDays < 0) ? 0 : Convert.ToInt32(left.TotalDays);
+            double percent = 100 / (total.TotalDays + 1) * (total.TotalDays + 1 - left.TotalDays);
+            percent = (percent > 100) ? 100 : Math.Round(percent, 2);
+
             Console.WriteLine();
             Console.WriteLine($"Сегодня:       {today.ToShortDateString()}");
             Console.WriteLine();
-            Console.WriteLine($"Всего дней:    {total.TotalDays + 1}"); // день ДМБ так же считаем
-            Console.WriteLine($"Осталось дней: {left.TotalDays}");
-            Console.WriteLine($"Пройдено:      {Math.Round(100 / (total.TotalDays + 1) * (total.TotalDays + 1 - left.TotalDays), 3)} %");
+            Console.WriteLine($"\tВсего дней:    {total.TotalDays + 1}"); // день ДМБ так же считаем
+            Console.WriteLine($"\tОсталось дней: {leftDays}");
+            Console.WriteLine($"\tПройдено:      {percent} %");
+
+            if (left.TotalDays == 0)
+                Console.WriteLine("\n\tДМБ сегодня!");
+
+            if (left.TotalDays < 0)
+                Console.WriteLine($"\n\tСлужба завершена {-left.TotalDays} дней назад!");
 
             Console.WriteLine("\n(C) Piotr Kniaz, 2022\nНажмите любую клавишу для выхода.");
             Console.ReadKey(true);
