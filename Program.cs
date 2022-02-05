@@ -30,7 +30,7 @@ namespace DMB_Timer
                 return;
             }
 
-            Console.Write("Введмте дату ДМБ:     ");
+            Console.Write("Введите дату ДМБ:     ");
             buf = Console.ReadLine();
             if (!DateTime.TryParse(buf, out DateTime finishDate))
             {
