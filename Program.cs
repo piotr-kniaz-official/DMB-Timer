@@ -11,10 +11,10 @@ namespace DMB_Timer
             var today = DateTime.Today;
             string buf;
 
-            Console.WriteLine("DMB Timer v.1.3\n");
+            Console.WriteLine("DMB Timer v.2.0\n");
             Console.WriteLine("Формат даты: DD.MM.YYYY\nНапример, 22.02.2022\n");
 
-            Console.Write("Введите дату призыва: ");
+            Console.Write("Введите дату призыва:\t");
             buf = Console.ReadLine();
             if (!DateTime.TryParse(buf, out DateTime startDate))
             {
@@ -30,7 +30,7 @@ namespace DMB_Timer
                 return;
             }
 
-            Console.Write("Введите дату ДМБ:     ");
+            Console.Write("Введите дату ДМБ:\t");
             buf = Console.ReadLine();
             if (!DateTime.TryParse(buf, out DateTime finishDate))
             {
@@ -53,12 +53,10 @@ namespace DMB_Timer
             double percent = 100 / (total.TotalDays + 1) * (total.TotalDays + 1 - left.TotalDays);
             percent = (percent > 100) ? 100 : Math.Round(percent, 2);
 
-            Console.WriteLine();
-            Console.WriteLine($"Сегодня:       {today.ToShortDateString()}");
-            Console.WriteLine();
-            Console.WriteLine($"\tВсего дней:    {total.TotalDays + 1}"); // день ДМБ так же считаем
-            Console.WriteLine($"\tОсталось дней: {leftDays}");
-            Console.WriteLine($"\tПройдено:      {percent} %");
+            Console.WriteLine($"Сегодня:\t\t{today.ToShortDateString()}");
+            Console.WriteLine($"\n\tВсего дней:\t{total.TotalDays + 1}"); // день ДМБ так же считаем
+            Console.WriteLine($"\tОсталось дней:\t{leftDays}");
+            Console.WriteLine($"\tПройдено:\t{percent} %");
 
             if (left.TotalDays == 0)
                 Console.WriteLine("\n\tДМБ сегодня!");
@@ -69,6 +67,11 @@ namespace DMB_Timer
             Console.WriteLine("\n(C) Piotr Kniaz, 2022\nНажмите любую клавишу для выхода.");
             Console.ReadKey(true);
             return;
+        }
+
+        private static void Calculate()
+        {
+
         }
     }
 }
