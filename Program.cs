@@ -1,13 +1,58 @@
 ﻿using System;
+using System.Globalization;
 
 namespace DMB_Timer
 {
     internal class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
+            CultureInfo dateCI = new CultureInfo("ru-RU", false);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine("DMB Timer v.2.0\n");
+
+            Console.WriteLine("DMB Timer v.3.0\n");
+
+            if (args.Length == 2)
+                ArgsParser(args);
+            else if (args.Length == 0)
+                UserInterface();
+            else
+                Console.WriteLine("Ошибка! Неверное количество аргументов.\nВведите две даты в формате DD.MM.YYYY");
+
+            Console.WriteLine("\n(C) Piotr Kniaz, 2022. For exit press any key.");
+            Console.ReadKey(true);
+            return;
+        }
+
+        private static void ArgsParser(string[] args)
+        {
+            DateTime[] dates = new DateTime[2];
+            bool error = false;
+
+            for (int i = 0; i < 2; i++)
+            {
+                if (!DateTime.TryParse(args[i], out dates[i]))
+                    error = true;
+            }
+
+            if (error)
+            {
+                Console.WriteLine("Ошибка! Неверный формат даты.");
+                return;
+            }
+
+            if (DateTime.Compare(dates[0], dates[1]) >= 0)
+            {
+                Console.WriteLine("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
+                return;
+            }
+
+            Calculate(dates[0], dates[1]);
+            return;
+        }
+
+        private static void UserInterface()
+        {
             Console.WriteLine("Формат даты: DD.MM.YYYY\nНапример, 22.02.2022");
 
             while (true)
@@ -58,9 +103,6 @@ namespace DMB_Timer
                 break;
             }
 
-            Console.WriteLine("\n(C) Piotr Kniaz, 2022. For exit press any key.");
-            Console.ReadKey(true);
-            return;
         }
 
         private static void Calculate(DateTime startDate, DateTime finishDate)
