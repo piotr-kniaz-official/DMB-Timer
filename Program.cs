@@ -12,12 +12,20 @@ namespace DMB_Timer
 
             Console.WriteLine("DMB Timer v.3.0\n");
 
-            if (args.Length == 2)
-                ArgsParser(args);
-            else if (args.Length == 0)
-                UserInterface();
-            else
-                Console.WriteLine("Ошибка! Неверное количество аргументов.\nВведите две даты в формате DD.MM.YYYY");
+            switch (args.Length)
+            {
+                case 0:
+                    UserInterface();
+                    break;
+
+                case 2:
+                    ArgsParser(args);
+                    break;
+
+                default:
+                    Console.WriteLine("Ошибка! Неверное количество аргументов.\nВведите две даты в формате DD.MM.YYYY");
+                    break;
+            }
 
             Console.WriteLine("\n(C) Piotr Kniaz, 2022. For exit press any key.");
             Console.ReadKey(true);
