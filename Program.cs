@@ -7,10 +7,10 @@ namespace DMB_Timer
     {
         static void Main(string[] args)
         {
-            CultureInfo dateCI = new CultureInfo("ru-RU", false);
+            CultureInfo.CurrentCulture = new CultureInfo("ru-RU", false);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Console.WriteLine("DMB Timer v.3.0\n");
+            Console.WriteLine("DMB Timer v.3.1\n");
 
             switch (args.Length)
             {
