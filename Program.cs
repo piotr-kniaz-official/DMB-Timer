@@ -23,7 +23,7 @@ namespace DMB_Timer
                     break;
 
                 default:
-                    Console.WriteLine("Ошибка! Неверное количество аргументов.\nВведите две даты в формате DD.MM.YYYY");
+                    Console.WriteLine("Ошибка! Неверное количество аргументов.\nВведите две даты в формате ДД.ММ.ГГГГ");
                     break;
             }
 
@@ -61,7 +61,7 @@ namespace DMB_Timer
 
         private static void UserInterface()
         {
-            Console.WriteLine("Формат даты: DD.MM.YYYY\nНапример, 22.02.2022");
+            Console.WriteLine("Формат даты: ДД.ММ.ГГГГ\nНапример, 22.02.2022");
 
             while (true)
             {
