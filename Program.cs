@@ -77,21 +77,18 @@ namespace DMB_Timer
 
                 Calculate(startDate, finishDate);
 
-                string buf;
+                string quit;
                 while (true)
                 {
                     Console.Write("\nВыйти из программы? (Y/N): ");
-                    buf = Console.ReadLine();
-
-                    if (buf == "N" || buf == "n" || buf == "Y" || buf == "y")
+                    quit = Console.ReadLine();
+                    if (quit == "N" || quit == "n" || quit == "Y" || quit == "y")
                         break;
-
                     Console.WriteLine("Ошибка! Введите 'Y' или 'N'.");
                 }
 
-                if (buf == "N" || buf == "n")
-                    continue;
-                break;
+                if (quit == "Y" || quit == "y")
+                    break;
             }
         }
 
