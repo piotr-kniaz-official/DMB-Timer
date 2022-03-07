@@ -10,7 +10,7 @@ namespace DMB_Timer
             CultureInfo.CurrentCulture = new CultureInfo("ru-RU", false);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Console.WriteLine("DMB Timer v.4.0 beta\n");
+            Console.WriteLine("DMB Timer v.4.0\n");
 
             switch (args.Length)
             {
@@ -19,7 +19,14 @@ namespace DMB_Timer
                     break;
 
                 case 2:
-                    ArgsParser(args);
+                    try
+                    {
+                        ArgsParser(args);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     break;
 
                 default:
@@ -29,34 +36,19 @@ namespace DMB_Timer
 
             Console.WriteLine("\n(C) Piotr Kniaz, 2022. For exit press any key.");
             Console.ReadKey(true);
-            return;
         }
 
         private static void ArgsParser(string[] args)
         {
             DateTime[] dates = new DateTime[2];
-            bool error = false;
 
             for (int i = 0; i < 2; i++)
-            {
-                if (!DateTime.TryParse(args[i], out dates[i]))
-                    error = true;
-            }
-
-            if (error)
-            {
-                Console.WriteLine("Ошибка! Неверный формат даты.");
-                return;
-            }
+                dates[i] = GetDate(args[i]);
 
             if (DateTime.Compare(dates[0], dates[1]) >= 0)
-            {
-                Console.WriteLine("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
-                return;
-            }
+                throw new Exception("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
 
             Calculate(dates[0], dates[1]);
-            return;
         }
 
         private static void UserInterface()
@@ -65,35 +57,27 @@ namespace DMB_Timer
 
             while (true)
             {
-                string buf;
-
-                Console.Write("\nВведите дату призыва:\t");
-                buf = Console.ReadLine();
-                if (!DateTime.TryParse(buf, out DateTime startDate))
+                DateTime startDate, finishDate;
+                try
                 {
-                    Console.WriteLine("Ошибка! Неверный формат даты.\nНажмите любую клавишу чтобы попробовать еще раз.");
-                    Console.ReadKey(true);
-                    continue;
+                    Console.Write("\nВведите дату призыва:\t");
+                    startDate = GetDate();
+
+                    Console.Write("Введите дату ДМБ:\t");
+                    finishDate = GetDate();
+
+                    if (DateTime.Compare(startDate, finishDate) >= 0)
+                        throw new Exception("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
                 }
-
-                Console.Write("Введите дату ДМБ:\t");
-                buf = Console.ReadLine();
-                if (!DateTime.TryParse(buf, out DateTime finishDate))
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Ошибка! Неверный формат даты.\nНажмите любую клавишу чтобы попробовать еще раз.");
-                    Console.ReadKey(true);
-                    continue;
-                }
-
-                if (DateTime.Compare(startDate, finishDate) >= 0)
-                {
-                    Console.WriteLine("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.\nНажмите любую клавишу чтобы попробовать еще раз.");
-                    Console.ReadKey(true);
+                    Console.WriteLine(ex.Message);
                     continue;
                 }
 
                 Calculate(startDate, finishDate);
 
+                string buf;
                 while (true)
                 {
                     Console.Write("\nВыйти из программы? (Y/N): ");
@@ -107,10 +91,17 @@ namespace DMB_Timer
 
                 if (buf == "N" || buf == "n")
                     continue;
-
                 break;
             }
+        }
 
+        private static DateTime GetDate(string input = "")
+        {
+            if (input.Length == 0)
+                input = Console.ReadLine();
+            if (!DateTime.TryParse(input, out DateTime date))
+                throw new FormatException("Ошибка! Неверный формат даты.");
+            return date;
         }
 
         private static void Calculate(DateTime startDate, DateTime finishDate)
@@ -120,7 +111,7 @@ namespace DMB_Timer
             if (DateTime.Compare(startDate, today) > 0)
             {
                 var leftBeforeStart = startDate.Subtract(today);
-                Console.WriteLine($"\n\tСлужба начнется через {leftBeforeStart.TotalDays} дней.");
+                Console.WriteLine($"\nСлужба начнется через {leftBeforeStart.TotalDays} дней.");
                 return;
             }
 
@@ -131,18 +122,16 @@ namespace DMB_Timer
             double percent = 100 / (total.TotalDays + 1) * (total.TotalDays + 1 - leftBeforeFinish.TotalDays);
             percent = (percent > 100) ? 100 : Math.Round(percent, 2);
 
-            Console.WriteLine($"Сегодня:\t\t{today.ToShortDateString()}");
-            Console.WriteLine($"\n\tВсего дней:\t{total.TotalDays + 1}"); // день ДМБ также считается
-            Console.WriteLine($"\tОсталось дней:\t{leftDays}");
-            Console.WriteLine($"\tПройдено:\t{percent} %");
+            Console.WriteLine($"Сегодня:\t\t{today.ToString("dd.MM.yyyy")}");
+            Console.WriteLine($"\nВсего дней:\t\t{total.TotalDays + 1}"); // день ДМБ также считается
+            Console.WriteLine($"Осталось дней:\t\t{leftDays}");
+            Console.WriteLine($"Пройдено:\t\t{percent} %");
 
             if (leftBeforeFinish.TotalDays == 0)
-                Console.WriteLine("\n\tДМБ сегодня!");
+                Console.WriteLine("\nДМБ сегодня!");
 
             if (leftBeforeFinish.TotalDays < 0)
-                Console.WriteLine($"\n\tСлужба завершена {-leftBeforeFinish.TotalDays} дней назад!");
-
-            return;
+                Console.WriteLine($"\nСлужба завершена {-leftBeforeFinish.TotalDays} дней назад!");
         }
     }
 }
