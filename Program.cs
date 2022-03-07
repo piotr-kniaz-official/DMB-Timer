@@ -25,7 +25,7 @@ namespace DMB_Timer
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine($"Ошибка! {ex.Message}");
                     }
                     break;
 
@@ -46,7 +46,7 @@ namespace DMB_Timer
                 dates[i] = GetDate(args[i]);
 
             if (DateTime.Compare(dates[0], dates[1]) >= 0)
-                throw new Exception("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
+                throw new Exception("Дата ДМБ не может быть раньше, чем дата призыва.");
 
             Calculate(dates[0], dates[1]);
         }
@@ -67,11 +67,11 @@ namespace DMB_Timer
                     finishDate = GetDate();
 
                     if (DateTime.Compare(startDate, finishDate) >= 0)
-                        throw new Exception("Ошибка! Дата ДМБ не может быть раньше, чем дата призыва.");
+                        throw new Exception("Дата ДМБ не может быть раньше, чем дата призыва.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine($"Ошибка! {ex.Message}");
                     continue;
                 }
 
@@ -97,7 +97,7 @@ namespace DMB_Timer
             if (input.Length == 0)
                 input = Console.ReadLine();
             if (!DateTime.TryParse(input, out DateTime date))
-                throw new FormatException("Ошибка! Неверный формат даты.");
+                throw new FormatException("Неверный формат даты.");
             return date;
         }
 
