@@ -86,7 +86,6 @@ namespace DMB_Timer
                         break;
                     Console.WriteLine("Ошибка! Введите 'Y' или 'N'.");
                 }
-
                 if (quit == "Y" || quit == "y")
                     break;
             }
@@ -119,7 +118,7 @@ namespace DMB_Timer
             double percent = 100 / (total.TotalDays + 1) * (total.TotalDays + 1 - leftBeforeFinish.TotalDays);
             percent = (percent > 100) ? 100 : Math.Round(percent, 2);
 
-            Console.WriteLine($"Сегодня:\t\t{today.ToString("dd.MM.yyyy")}");
+            Console.WriteLine($"Сегодня:\t\t{today:dd.MM.yyyy}");
             Console.WriteLine($"\nВсего дней:\t\t{total.TotalDays + 1}"); // день ДМБ также считается
             Console.WriteLine($"Осталось дней:\t\t{leftDays}");
             Console.WriteLine($"Пройдено:\t\t{percent} %");
