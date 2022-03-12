@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 
 namespace DMB_Timer
 {
@@ -34,8 +35,8 @@ namespace DMB_Timer
                     break;
             }
 
-            Console.WriteLine("\n(C) Piotr Kniaz, 2022. For exit press any key.");
-            Console.ReadKey(true);
+            Console.WriteLine("\n(C) Piotr Kniaz, 2022.");
+            Thread.Sleep(1000);
         }
 
         private static void ArgsParser(string[] args)
